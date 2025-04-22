@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Schwifty Theme change</title>
+    <script>
+      //disable flickering on load
+      const theme = localStorage.getItem("theme") || "light";
+      if (theme === "dark") {
+        document.documentElement.style.setProperty(
+          "--background-color",
+          "#18191f"
+        );
+        document.documentElement.style.setProperty("--text-color", "#ffffff");
+      } else {
+        document.documentElement.style.setProperty(
+          "--background-color",
+          "#ffffff"
+        );
+        document.documentElement.style.setProperty("--text-color", "#18191f");
+      }
+    </script>
+    <style>
+      :root {
+        --primary-color: #18191f;
+        --white: #fff;
+        --background-color: var(--white);
+        --text-color: var(--primary-color);
+      }
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        font-family: sans-serif;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        gap: 1rem;
+      }
+
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        inset: 0;
+        background-color: var(--text-color);
+        transition: 0.4s;
+        border-radius: 34px;
+      }
+
+      .slider::before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: var(--background-color);
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider::before {
+        transform: translateX(26px);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <label class="switch">
+        <input type="checkbox" id="themeToggle" />
+        <span class="slider"></span>
+      </label>
+      <h1>Schwifty - Dark/Light Theme</h1>
+    </main>
+
+    <script>
+      //theme toggle
+      const toggle = document.getElementById("themeToggle");
+
+      const setTheme = (mode) => {
+        if (mode === "dark") {
+          document.documentElement.style.setProperty(
+            "--background-color",
+            "#18191f"
+          );
+          document.documentElement.style.setProperty("--text-color", "#ffffff");
+          toggle.checked = true;
+        } else {
+          document.documentElement.style.setProperty(
+            "--background-color",
+            "#ffffff"
+          );
+          document.documentElement.style.setProperty("--text-color", "#18191f");
+          toggle.checked = false;
+        }
+        localStorage.setItem("theme", mode);
+      };
+      //localStorage save/update
+      const savedTheme = localStorage.getItem("theme") || "light";
+      setTheme(savedTheme);
+      toggle.addEventListener("change", () => {
+        setTheme(toggle.checked ? "dark" : "light");
+      });
+    </script>
+  </body>
+</html>
